@@ -1,0 +1,41 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodni olish
+        uses: actions/checkout@v4
+
+      - name: Zip faylni ochish
+        run: |
+          unzip -o WiFiInfoPro.zip -d extracted
+          mv extracted/WiFiInfoPro/* .
+          mv extracted/WiFiInfoPro/.[!.]* . 2>/dev/null || true
+
+      - name: JDK 17 o'rnatish
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle wrapper yaratish (agar mavjud bo'lmasa)
+        run: |
+          if [ ! -f "./gradlew" ]; then
+            gradle wrapper --gradle-version 8.7
+          fi
+          chmod +x ./gradlew
+
+      - name: Debug APK yasash
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: APK faylni saqlash (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: WiFiInfoPro-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
