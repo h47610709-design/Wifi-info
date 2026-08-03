@@ -22,7 +22,14 @@ jobs:
         run: |
           sed -i 's/org.jetbrains.kotlin.android") version "1.9.24"/org.jetbrains.kotlin.android") version "2.0.21"/' build.gradle.kts
           sed -i 's/org.jetbrains.kotlin.plugin.compose") version "1.9.24"/org.jetbrains.kotlin.plugin.compose") version "2.0.21"/' build.gradle.kts
-          cat build.gradle.kts
+
+      - name: Kod xatolarini tuzatish
+        run: |
+          sed -i '/import androidx.compose.runtime.getValue/a import androidx.compose.runtime.setValue' app/src/main/java/com/wifiinfopro/app/MainActivity.kt
+          sed -i 's/this.then(androidx.compose.foundation.clickable(onClick = onClick))/this.clickable(onClick = onClick)/' app/src/main/java/com/wifiinfopro/app/ui/screens/SettingsScreen.kt
+          sed -i 's/this.then(androidx.compose.foundation.clickable {/this.clickable {/' app/src/main/java/com/wifiinfopro/app/ui/screens/SettingsScreen.kt
+          sed -i '103s/^    })$/    }/' app/src/main/java/com/wifiinfopro/app/ui/screens/SettingsScreen.kt
+          sed -i '/import androidx.compose.ui.Modifier/a import androidx.compose.foundation.clickable' app/src/main/java/com/wifiinfopro/app/ui/screens/SettingsScreen.kt
 
       - name: JDK 17 o'rnatish
         uses: actions/setup-java@v4
