@@ -24,6 +24,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Gradle 8.7 o'rnatish
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
       - name: Gradle wrapper yaratish (agar mavjud bo'lmasa)
         run: |
           if [ ! -f "./gradlew" ]; then
