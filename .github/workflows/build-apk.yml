@@ -18,6 +18,12 @@ jobs:
           mv extracted/WiFiInfoPro/* .
           mv extracted/WiFiInfoPro/.[!.]* . 2>/dev/null || true
 
+      - name: Kotlin versiyasini tuzatish
+        run: |
+          sed -i 's/org.jetbrains.kotlin.android") version "1.9.24"/org.jetbrains.kotlin.android") version "2.0.21"/' build.gradle.kts
+          sed -i 's/org.jetbrains.kotlin.plugin.compose") version "1.9.24"/org.jetbrains.kotlin.plugin.compose") version "2.0.21"/' build.gradle.kts
+          cat build.gradle.kts
+
       - name: JDK 17 o'rnatish
         uses: actions/setup-java@v4
         with:
